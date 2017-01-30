@@ -17,3 +17,11 @@ html, body {
 .modal-img {
   width: 100%;
 }
+
+#wiki-content {
+  background: silver;
+}
+
+#wiki-dialog {
+  width: 75%;
+}

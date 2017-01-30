@@ -11,9 +11,9 @@ var places = [
    description: "Built on the Field of Mars, this famous temple was built to"
    + "honor all of the Roman gods at once.",
    imgSrc: "https://upload.wikimedia.org/wikipedia/commons/8/8f/Pantheon_wider_centered.jpg"},
-  {name: "The Colloseum",
+  {name: "The Colosseum",
    location: {lat: 41.890197, lng: 12.492237},
-   codename: "colloseum",
+   codename: "colosseum",
    description: "The site of many gladitorial games, executions, and various"
     + " other forms of public entertainment, the Colloseum remains a "
     + "testament to peoples' love of both blood and showmanship.",
@@ -40,7 +40,7 @@ var places = [
     + " was, in antiquity, thought to be home to the cave in which Romulus"
     + " and Remus were reared by wolves.",
    imgSrc: "http://www.planetware.com/photos-large/I/italy-rome-palatine-hill-stadium-overview.jpg"},
-  {name: "River Tiber",
+  {name: "Tiber River",
    location: {lat: 41.888664, lng: 12.479562},
    codename: "tiber",
    description: "The main river flowing through Rome, and the end of many"
@@ -72,7 +72,24 @@ var setPlaces = function() {
     });
     google.maps.event.addListener(markerName, 'click', function(name) {
       return function() {
-        console.log(name.name);
+        //Search wikipedia for articles matching name of location.
+        var wikiurl = 'https://en.wikipedia.org/w/api.php?action='
+        + 'opensearch&search='+ name.name +'&format=json';
+        $.ajax({
+          url: wikiurl,
+          dataType: "jsonp",
+          success: function(response) {
+            //Return the first and (theoretically) most relavent link.
+            var wikiLink = response[3][0];
+            //Set link value to modal's "Learn more" link.
+            $('#wiki-link').attr("href", wikiLink);
+            //Trigger opening of secondary 'wiki' modal upon click.
+            $('#wiki-link').on('click', function() {
+              $('#wiki-modal').modal('show');
+            });
+          }
+        });
+        //Replace information within modal with that of selected location.
         $('#description').text(name.description);
         $('#modal-title').text(name.name);
         $('#modal-img').attr("src", name.imgSrc);

@@ -16,7 +16,7 @@
     </div>
     <div class="modal fade" id="modal" tabindex="-1" role="dialog"
       aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
+      <div id= "modal-dialog" class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"
@@ -30,8 +30,31 @@
             <p id="description"></p>
           </div>
           <div class="modal-footer">
+            <a id="wiki-link" class="btn" target="myframe"
+              >Learn more</a>
             <button type="button" class="btn btn-default"
               data-dismiss="modal">Neat!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="wiki-modal" tabindex="-1" role="dialog"
+      aria-labelledby="myModalLabel">
+      <div id= "wiki-dialog" class="modal-dialog" role="document">
+        <div id="wiki-content" class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"
+              aria-label="Close"><span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="wiki-title">Wikipedia</h4>
+          </div>
+          <div class="modal-body">
+            <iframe id="iframe" name="myframe" src="" width="100%"
+              height="425px" frameBorder="0"></iframe>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default"
+              data-dismiss="modal">Good to know!</button>
           </div>
         </div>
       </div>

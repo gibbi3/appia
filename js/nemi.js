@@ -1,6 +1,6 @@
 var map;
 var initialPlaces = [
-  {name: "Forum",
+  {name: "Foro Romano",
    location: {lat: 41.892451, lng: 12.485324},
    codename: "forum",
    description: "The Roman Forum was the center of the Roman Empire",
@@ -63,15 +63,17 @@ var setMap = function() {
 var setPlaces = function() {
   for (i in historicPlaces()) {
     var place = historicPlaces()[i];
-    markerName = place.codename;
-    var markerName = new google.maps.Marker({
+    marker = place.codename;
+    var marker = new google.maps.Marker({
       name: place.name,
       position: place.location,
       codename: place.codename,
       map:map
     });
-    google.maps.event.addListener(markerName, 'click', function(name) {
+    google.maps.event.addListener(marker, 'click', function(name) {
       return function() {
+        map.setCenter(name.location);
+        map.setZoom(17);
         //Search wikipedia for articles matching name of location.
         requestWiki(name.name);
         //Replace information within modal with that of selected location.
@@ -126,22 +128,17 @@ var ViewModel = function() {
 
   initialPlaces.forEach(function(placeItem) {
     self.historicPlacesObservable.push( new Place(placeItem) );
-    console.log(self.historicPlacesObservable());
   });
 
   this.selectedPlace = ko.observable( this.historicPlacesObservable()[0] );
 
   this.viewListItem = function(clicked) {
-      console.log("butts");
       self.selectedPlace(clicked);
-      console.log(self.selectedPlace().name());
-      $('#modal').modal('show');
       requestWiki(self.selectedPlace().name());
+      map.setCenter(self.selectedPlace().location());
+      $('#modal').modal('show');
   };
 
-  this.renderModal = function() {
-    $('#modal').modal('show');
-  }
 };
 
 ko.applyBindings(new ViewModel());

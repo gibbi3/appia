@@ -135,6 +135,7 @@ var ViewModel = function() {
   this.viewListItem = function(clicked) {
       self.selectedPlace(clicked);
       requestWiki(self.selectedPlace().name());
+      map.setZoom(17);
       map.setCenter(self.selectedPlace().location());
       $('#modal').modal('show');
   };

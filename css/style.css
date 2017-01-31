@@ -32,6 +32,13 @@ html, body {
 }
 
 .title-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.title-section {
+  width: 100%;
   display: flex;
   align-items: center;
 }

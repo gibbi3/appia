@@ -12,17 +12,22 @@
   <body>
     <div class="container">
       <div class="title-bar">
-        <div class="btn-group">
-          <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Nemi
-          </button>
-          <div class="dropdown-menu">
-            <div data-bind="foreach: historicPlacesObservable">
-              <div data-bind="text: name, click: $parent.viewListItem" class="list-item"></div>
+        <div class="title-section">
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Nemi
+            </button>
+            <div class="dropdown-menu">
+              <div data-bind="foreach: historicPlacesObservable">
+                <div data-bind="text: name, click: $parent.viewListItem" class="list-item"></div>
+              </div>
             </div>
           </div>
+          <div class="instructions">Click to see a list of places!</div>
         </div>
-        <div class="instructions">Click to see a list of places!</div>
+        <div class="option-bar">
+          <div data-bind="click: mapReset" class="reset">Reset</div>
+        </div>
       </div>
       <div id="map"></div>
     </div>

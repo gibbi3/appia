@@ -139,6 +139,10 @@ var ViewModel = function() {
       $('#modal').modal('show');
   };
 
+  this.mapReset = function() {
+    setMap();
+  };
+
 };
 
 ko.applyBindings(new ViewModel());

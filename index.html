@@ -11,7 +11,19 @@
   </head>
   <body>
     <div class="container">
-      <h1>Nemi</h1>
+      <div class="title-bar">
+        <div class="btn-group">
+          <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Nemi
+          </button>
+          <div class="dropdown-menu">
+            <div data-bind="foreach: historicPlacesObservable">
+              <div data-bind="text: name, click: $parent.viewListItem" class="list-item"></div>
+            </div>
+          </div>
+        </div>
+        <div class="instructions">Click to see a list of places!</div>
+      </div>
       <div id="map"></div>
     </div>
     <div class="modal fade" id="modal" tabindex="-1" role="dialog"
@@ -22,12 +34,12 @@
             <button type="button" class="close" data-dismiss="modal"
               aria-label="Close"><span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title" id="modal-title"></h4>
+            <h4 data-bind="text: selectedPlace().name" class="modal-title" id="modal-title"></h4>
           </div>
           <div class="modal-body">
-            <img id = "modal-img" class="modal-img" src=""
+            <img data-bind="attr: {src: selectedPlace().imgSrc}" id="modal-img" class="modal-img" src=""
               alt="Picture of historical Roman place.">
-            <p id="description"></p>
+            <p data-bind="text: selectedPlace().description" id="description"></p>
           </div>
           <div class="modal-footer">
             <a id="wiki-link" class="btn" target="myframe"

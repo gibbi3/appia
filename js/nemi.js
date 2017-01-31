@@ -1,5 +1,5 @@
 var map;
-var places = [
+var initialPlaces = [
   {name: "Forum",
    location: {lat: 41.892451, lng: 12.485324},
    codename: "forum",
@@ -62,7 +62,7 @@ var setMap = function() {
 
 var setPlaces = function() {
   for (i in historicPlaces()) {
-    var place = historicPlaces()[i]
+    var place = historicPlaces()[i];
     markerName = place.codename;
     var markerName = new google.maps.Marker({
       name: place.name,
@@ -73,22 +73,7 @@ var setPlaces = function() {
     google.maps.event.addListener(markerName, 'click', function(name) {
       return function() {
         //Search wikipedia for articles matching name of location.
-        var wikiurl = 'https://en.wikipedia.org/w/api.php?action='
-        + 'opensearch&search='+ name.name +'&format=json';
-        $.ajax({
-          url: wikiurl,
-          dataType: "jsonp",
-          success: function(response) {
-            //Return the first and (theoretically) most relavent link.
-            var wikiLink = response[3][0];
-            //Set link value to modal's "Learn more" link.
-            $('#wiki-link').attr("href", wikiLink);
-            //Trigger opening of secondary 'wiki' modal upon click.
-            $('#wiki-link').on('click', function() {
-              $('#wiki-modal').modal('show');
-            });
-          }
-        });
+        requestWiki(name.name);
         //Replace information within modal with that of selected location.
         $('#description').text(name.description);
         $('#modal-title').text(name.name);
@@ -99,11 +84,64 @@ var setPlaces = function() {
   };
 };
 
+var requestWiki = function(object) {
+  var wikiurl = 'https://en.wikipedia.org/w/api.php?action='
+  + 'opensearch&search='+ object +'&format=json';
+  $.ajax({
+    url: wikiurl,
+    dataType: "jsonp",
+    success: function(response) {
+      //Return the first and (theoretically) most relavent link.
+      var wikiLink = response[3][0];
+      //Set link value to modal's "Learn more" link.
+      $('#wiki-link').attr("href", wikiLink);
+      //Trigger opening of secondary 'wiki' modal upon click.
+      $('#wiki-link').on('click', function() {
+        $('#wiki-modal').modal('show');
+      });
+    }
+  });
+};
+
+var setModal = function(place) {};
+
+var Place = function(data) {
+  this.name = ko.observable(data.name);
+  this.location = ko.observable(data.location);
+  this.codename = ko.observable(data.codename);
+  this.description = ko.observable(data.description);
+  this.imgSrc = ko.observable(data.imgSrc);
+};
+
 var ViewModel = function() {
+
+  var self = this;
+
   historicPlaces = ko.observableArray([]);
-  places.forEach(function(place) {
+  this.historicPlacesObservable = ko.observableArray([]);
+
+  initialPlaces.forEach(function(place) {
     historicPlaces.push(place);
   });
+
+  initialPlaces.forEach(function(placeItem) {
+    self.historicPlacesObservable.push( new Place(placeItem) );
+    console.log(self.historicPlacesObservable());
+  });
+
+  this.selectedPlace = ko.observable( this.historicPlacesObservable()[0] );
+
+  this.viewListItem = function(clicked) {
+      console.log("butts");
+      self.selectedPlace(clicked);
+      console.log(self.selectedPlace().name());
+      $('#modal').modal('show');
+      requestWiki(self.selectedPlace().name());
+  };
+
+  this.renderModal = function() {
+    $('#modal').modal('show');
+  }
 };
 
 ko.applyBindings(new ViewModel());

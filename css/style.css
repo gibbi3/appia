@@ -1,6 +1,6 @@
 #map {
-        height: 90%;
-      }
+  height: 90%;
+}
 
 html, body {
   height: 100%;
@@ -24,4 +24,19 @@ html, body {
 
 #wiki-dialog {
   width: 75%;
+}
+
+.btn-secondary {
+  background: white;
+  font-size: 35px;
+}
+
+.title-bar {
+  display: flex;
+  align-items: center;
+}
+
+.list-item {
+  font-size: 22px;
+  cursor: pointer;
 }

@@ -26,11 +26,20 @@ html, body {
   width: 75%;
 }
 
-.btn-secondary {
+.btn-secondary.btn-lg {
   background: white;
   font-size: 35px;
 }
 
+.btn-secondary.btn-sm {
+  background: white;
+}
+
+.reset {
+  margin-left: 10px;
+  width: 100px;
+  cursor: pointer;
+}
 .title-bar {
   width: 100%;
   display: flex;
@@ -46,4 +55,20 @@ html, body {
 .list-item {
   font-size: 22px;
   cursor: pointer;
+}
+
+.option-bar {
+  display: flex;
+  align-items: center;
+}
+
+.gm-iv-address {
+  height: 100% !important;
+}
+
+@media only screen and (max-width: 500px) {
+
+  .instructions {
+    display: none;
+  }
 }

@@ -26,7 +26,15 @@
           <div class="instructions">Click to see a list of places!</div>
         </div>
         <div class="option-bar">
-          <div data-bind="click: mapReset" class="reset">Reset</div>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Filter
+            </button>
+            <div class="dropdown-menu">
+              ...
+            </div>
+          </div>
+          <div data-bind="click: mapReset" class="reset">Center Map</div>
         </div>
       </div>
       <div id="map"></div>

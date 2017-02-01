@@ -70,11 +70,11 @@ html, body {
 @media only screen and (max-width: 500px) {
 
   .instructions {
-    display: none;
+      display: none;
   }
 
-  #image-container {
-    margin-left: 20px;
+  .modal-image {
+      width: 100%;
   }
 
 }

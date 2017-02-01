@@ -113,7 +113,8 @@ var requestGetty = function(object) {
     .done(function(data){
         console.log("Success with data");
         for(var i = 0;i< 9;i++) {
-            $("#image-container").prepend("<img src='" + data.images[i].display_sizes[0].uri + "'/>");
+            $("#image-container").prepend("<img src='"
+                + data.images[i].display_sizes[0].uri + "'/>");
          }
     })
     .fail(function(data){

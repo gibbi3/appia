@@ -1,33 +1,49 @@
 var map;
+var markers = [];
 // Where the places are.
 var initialPlaces = [
   {name: "Foro Romano",
    location: {lat: 41.892451, lng: 12.485324},
+   period: "pre-imperial",
    description: "The Roman Forum was the center of the Roman Empire"},
+  {name: "Septimus Severus Arch",
+   location: {lat: 41.892884, lng: 12.484744},
+   period: "pre-imperial",
+   description: "This arch was built to honor a Roman victory over the"
+   + "Parthians. Built in the days of the Roman Republic.",},
   {name: "The Pantheon",
    location: {lat: 41.898603, lng: 12.476873},
+   period: "imperial",
    description: "Built on the Field of Mars, this famous temple was built to"
    + "honor all of the Roman gods at once."},
   {name: "The Colosseum",
    location: {lat: 41.890197, lng: 12.492237},
+   period: "imperial",
    description: "The site of many gladitorial games, executions, and various"
     + " other forms of public entertainment, the Colloseum remains a "
     + "testament to peoples' love of both blood and showmanship."},
   {name: "Circus Maximus",
    location: {lat: 41.886243, lng: 12.485150},
+   period: "imperial",
    description: "Latin for 'Largest Circus', the Circus Maximus was the site of"
     + " various forms of entertainment. It remains one of Rome's best preserved"
     + " sites, perhaps owing its state to its incredible size."},
   {name: "Palatine Hill",
    location: {lat: 41.888605, lng: 12.488407},
+   period: "pre-imperial",
    description: "The centermost hill of the 7 hills of Rome, the Palatine hill"
     + " was, in antiquity, thought to be home to the cave in which Romulus"
     + " and Remus were reared by wolves."},
   {name: "Tiber River",
    location: {lat: 41.888664, lng: 12.479562},
+   period: "All",
    description: "The main river flowing through Rome, and the end of many"
     + " sewers. Much commerce was done here; its shoreline was a bustling"
-    + " marketplace."}
+    + " marketplace."},
+    {name: "Trajan's Column",
+     location: {lat: 41.895829, lng: 12.484305},
+     period: "imperial",
+     description: "Built by Trajan to celebrate a victory over the Dacians."}
  ];
 
 var setMap = function() {
@@ -55,9 +71,11 @@ var setPlaces = function() {
         var place = historicPlaces()[i];
         marker = new google.maps.Marker({
             name: place.name,
+            period: place.period,
             position: place.location,
             map:map
         });
+        markers.push(marker);
         google.maps.event.addListener(marker, 'click', function(name, target) {
             return function() {
             // Set animation to clicked marker
@@ -79,6 +97,18 @@ var setPlaces = function() {
         }(place, marker));
     };
 };
+
+var filterPlaces = function(period) {
+    for (i = 0; i < markers.length; i++) {
+        marker = markers[i];
+      // If is same category or category not picked
+        if(marker.period == period || period.length == 0) {
+            marker.setVisible(true);
+        } else {
+            marker.setVisible(false);
+        }
+    }
+}
 
 var requestWiki = function(object) {
     var wikiurl = 'https://en.wikipedia.org/w/api.php?action='
@@ -125,6 +155,7 @@ var requestGetty = function(object) {
 var Place = function(data) {
   this.name = ko.observable(data.name);
   this.location = ko.observable(data.location);
+  this.period = ko.observable(data.period);
   this.description = ko.observable(data.description);
 };
 

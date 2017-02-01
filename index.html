@@ -26,14 +26,13 @@
           <div class="instructions">Click to see a list of places!</div>
         </div>
         <div class="option-bar">
-          <div class="btn-group">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Filter
-            </button>
-            <div class="dropdown-menu">
-              Under construction
-            </div>
-          </div>
+          <h6>Filter by Period</h6>
+          <select id="period" onchange="filterPlaces(this.value);">
+              <option value="">All</option>
+              <option value="pre-imperial">Pre-Imperial</option>
+              <option value="imperial">Imperial</option>
+              <option value="post-imperial">Post-Imperial</option>
+          </select>
           <div data-bind="click: mapReset" class="reset">Center Map</div>
         </div>
       </div>

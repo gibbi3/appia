@@ -82,4 +82,8 @@ html, body {
       margin: 0;
   }
 
+  .filter-header {
+      display: none;
+  }
+
 }

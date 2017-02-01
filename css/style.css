@@ -14,8 +14,9 @@ html, body {
   position: relative;
 }
 
-.modal-img {
+#image-container {
   width: 100%;
+  padding: 28px;
 }
 
 #wiki-content {

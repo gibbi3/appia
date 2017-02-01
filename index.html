@@ -31,7 +31,7 @@
               Filter
             </button>
             <div class="dropdown-menu">
-              ...
+              Under construction
             </div>
           </div>
           <div data-bind="click: mapReset" class="reset">Center Map</div>
@@ -50,13 +50,12 @@
             <h4 data-bind="text: selectedPlace().name" class="modal-title" id="modal-title"></h4>
           </div>
           <div class="modal-body">
-            <img data-bind="attr: {src: selectedPlace().imgSrc}" id="modal-img" class="modal-img" src=""
-              alt="Picture of historical Roman place.">
+            <div id="image-container">
+            </div>
             <p data-bind="text: selectedPlace().description" id="description"></p>
           </div>
           <div class="modal-footer">
-            <a id="wiki-link" class="btn" target="myframe"
-              >Learn more</a>
+            <a id="wiki-link" class="btn" target="myframe">Learn more</a>
             <button type="button" class="btn btn-default"
               data-dismiss="modal">Neat!</button>
           </div>

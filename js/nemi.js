@@ -48,12 +48,12 @@ var initialPlaces = [
      location: {lat: 41.910701, lng: 12.476376},
      period: "Post-Imperial",
      description: "'The People's Square' in Italian, this relatively modern"
-     + "plaza is situated at the ancient northern gate to the city."},
+     + " plaza is situated at the ancient northern gate to the city."},
     {name: "Porta Alchemica",
      location: {lat: 41.895640, lng: 12.503592},
      period: "Post-Imperial",
      description: "As legend has it, an odd pilgrim vanished through this door"
-     + "long ago, leaving behind some gold flakes."}
+     + " long ago, leaving behind some gold flakes."}
  ];
 
 var periods = ['Pre-Imperial', 'Imperial', 'Post-Imperial'];
@@ -123,22 +123,30 @@ var filterPlaces = function(period) {
 }
 
 var requestWiki = function(object) {
-    var wikiurl = 'https://en.wikipedia.org/w/api.php?action='
-        + 'opensearch&search='+ object +'&format=json';
-    $.ajax({
-        url: wikiurl,
+
+    var wikiTimeout = setTimeout(function(){
+      $('#error-msg').text("Unable to find Wikipedia articles for " + object);
+    }, 5000);
+
+    var request = $.ajax({
+        url: 'https://en.wikipedia.org/w/api.php?action='
+            + 'opensearch&search='+ object +'&format=json',
         dataType: "jsonp",
-        success: function(response) {
+        jsonpCallback: "onJSONPLoad"
+      })
+      .done(function(response) {
+            clearTimeout(wikiTimeout);
         //Return the first and (theoretically) most relavent link.
-            var wikiLink = response[3][0];
+            var wikiLink = response[3][0]
             //Set link value to modal's "Learn more" link.
             $('#wiki-link').attr("href", wikiLink);
             //Trigger opening of secondary 'wiki' modal upon click.
             $('#wiki-link').on('click', function() {
                 $('#wiki-modal').modal('show');
+
             });
-        }
-    });
+        })
+
 };
 
 var requestGetty = function(object) {
@@ -161,7 +169,7 @@ var requestGetty = function(object) {
          }
     })
     .fail(function(data){
-        alert(JSON.stringify(data,2))
+        alert("Unable to retrieve images.")
     });
 };
 

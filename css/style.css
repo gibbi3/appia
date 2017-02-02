@@ -28,6 +28,11 @@ html, body {
   width: 75%;
 }
 
+#error-msg {
+  text-align: left;
+  color: red;
+}
+
 .btn-secondary.btn-lg {
   background: white;
   font-size: 35px;

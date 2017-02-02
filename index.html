@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nemi</title>
+    <title>Appia</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <script src="bower_components/knockout/dist/knockout.js"></script>
@@ -14,25 +14,25 @@
       <div class="title-bar">
         <div class="title-section">
           <div class="btn-group">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Nemi
+            <button class="btn btn-secondary btn-lg dropdown-toggle"
+              type="button" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false" data-bind="click: filterPlacesList">
+              Appia
             </button>
             <div class="dropdown-menu">
-              <div data-bind="foreach: historicPlacesObservable">
-                <div data-bind="text: name, click: $parent.viewListItem" class="list-item"></div>
+              <div class="place-list" data-bind="foreach: historicPlacesList">
+                <div data-bind="text: name, click: $parent.viewListItem"
+                  class="list-item"></div>
               </div>
             </div>
           </div>
           <div class="instructions">Click to see a list of places!</div>
         </div>
         <div class="option-bar">
-          <h6 class="filter-header">Filter by Period</h6>
-          <select id="period" onchange="filterPlaces(this.value);">
-              <option value="">All</option>
-              <option value="pre-imperial">Pre-Imperial</option>
-              <option value="imperial">Imperial</option>
-              <option value="post-imperial">Post-Imperial</option>
-          </select>
+          <select id="period" onchange="filterPlaces(this.value);"
+            data-bind="options: periods,
+                       optionsCaption: 'Filter by Period',
+                       value: selectedPeriod"></select>
           <div data-bind="click: mapReset" class="reset">Center Map</div>
         </div>
       </div>
@@ -46,12 +46,14 @@
             <button type="button" class="close" data-dismiss="modal"
               aria-label="Close"><span aria-hidden="true">&times;</span>
             </button>
-            <h4 data-bind="text: selectedPlace().name" class="modal-title" id="modal-title"></h4>
+            <h4 data-bind="text: selectedPlace().name" class="modal-title"
+              id="modal-title"></h4>
           </div>
           <div class="modal-body">
             <div id="image-container">
             </div>
-            <p data-bind="text: selectedPlace().description" id="description"></p>
+            <p data-bind="text: selectedPlace().description" id="description">
+            </p>
           </div>
           <div class="modal-footer">
             <a id="wiki-link" class="btn" target="myframe">Learn more</a>

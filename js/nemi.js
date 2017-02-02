@@ -4,47 +4,59 @@ var markers = [];
 var initialPlaces = [
   {name: "Foro Romano",
    location: {lat: 41.892451, lng: 12.485324},
-   period: "pre-imperial",
+   period: "Pre-Imperial",
    description: "The Roman Forum was the center of the Roman Empire"},
   {name: "Septimus Severus Arch",
    location: {lat: 41.892884, lng: 12.484744},
-   period: "pre-imperial",
+   period: "Pre-Imperial",
    description: "This arch was built to honor a Roman victory over the"
    + "Parthians. Built in the days of the Roman Republic.",},
   {name: "The Pantheon",
    location: {lat: 41.898603, lng: 12.476873},
-   period: "imperial",
+   period: "Imperial",
    description: "Built on the Field of Mars, this famous temple was built to"
    + "honor all of the Roman gods at once."},
   {name: "The Colosseum",
    location: {lat: 41.890197, lng: 12.492237},
-   period: "imperial",
+   period: "Imperial",
    description: "The site of many gladitorial games, executions, and various"
     + " other forms of public entertainment, the Colloseum remains a "
     + "testament to peoples' love of both blood and showmanship."},
   {name: "Circus Maximus",
    location: {lat: 41.886243, lng: 12.485150},
-   period: "imperial",
+   period: "Imperial",
    description: "Latin for 'Largest Circus', the Circus Maximus was the site of"
     + " various forms of entertainment. It remains one of Rome's best preserved"
     + " sites, perhaps owing its state to its incredible size."},
   {name: "Palatine Hill",
    location: {lat: 41.888605, lng: 12.488407},
-   period: "pre-imperial",
+   period: "Pre-Imperial",
    description: "The centermost hill of the 7 hills of Rome, the Palatine hill"
     + " was, in antiquity, thought to be home to the cave in which Romulus"
     + " and Remus were reared by wolves."},
   {name: "Tiber River",
    location: {lat: 41.888664, lng: 12.479562},
-   period: "All",
+   period: "",
    description: "The main river flowing through Rome, and the end of many"
     + " sewers. Much commerce was done here; its shoreline was a bustling"
     + " marketplace."},
     {name: "Trajan's Column",
      location: {lat: 41.895829, lng: 12.484305},
-     period: "imperial",
-     description: "Built by Trajan to celebrate a victory over the Dacians."}
+     period: "Imperial",
+     description: "Built by Trajan to celebrate a victory over the Dacians."},
+    {name: "Piazza del Popolo",
+     location: {lat: 41.910701, lng: 12.476376},
+     period: "Post-Imperial",
+     description: "'The People's Square' in Italian, this relatively modern"
+     + "plaza is situated at the ancient northern gate to the city."},
+    {name: "Porta Alchemica",
+     location: {lat: 41.895640, lng: 12.503592},
+     period: "Post-Imperial",
+     description: "As legend has it, an odd pilgrim vanished through this door"
+     + "long ago, leaving behind some gold flakes."}
  ];
+
+var periods = ['Pre-Imperial', 'Imperial', 'Post-Imperial'];
 
 var setMap = function() {
     // Initiation of google map.
@@ -135,7 +147,8 @@ var requestGetty = function(object) {
 
     $.ajax({
         type:'GET',
-        url:"https://api.gettyimages.com/v3/search/images/creative?phrase=" + object,
+        url:"https://api.gettyimages.com/v3/search/images/creative?phrase="
+          + object,
         beforeSend: function (request) {
             request.setRequestHeader("Api-Key", apiKey);
         }
@@ -164,20 +177,44 @@ var ViewModel = function() {
     var self = this;
 
     historicPlaces = ko.observableArray([]);
-    this.historicPlacesObservable = ko.observableArray([]);
+    this.historicPlacesList = ko.observableArray([]);
 
     initialPlaces.forEach(function(place) {
         historicPlaces.push(place);
     });
 
     initialPlaces.forEach(function(placeItem) {
-        self.historicPlacesObservable.push( new Place(placeItem) );
+        self.historicPlacesList.push( new Place(placeItem) );
     });
 
-    this.selectedPlace = ko.observable( this.historicPlacesObservable()[0] );
+    this.selectedPlace = ko.observable( this.historicPlacesList()[0] );
+
+    this.selectedPeriod = ko.observable('');
+
+    this.filterPlacesList = function() {
+        self.historicPlacesList([]);
+        console.log(self.selectedPeriod());
+        for (i = 0; i < initialPlaces.length; i++) {
+            var place = initialPlaces[i];
+            if (initialPlaces[i].period == self.selectedPeriod() ||
+                self.selectedPeriod() == undefined) {
+                self.historicPlacesList.push( new Place(place) );
+            }
+        }
+    }
 
     this.viewListItem = function(clicked) {
         self.selectedPlace(clicked);
+        for (i = 0; i < markers.length; i++) {
+            marker = markers[i];
+            console.log(marker.name);
+            console.log(self.selectedPlace().name());
+            if (marker.name == self.selectedPlace().name()) {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                stopAnimation(marker);
+                console.log(marker.name);
+            }
+        }
         requestWiki(self.selectedPlace().name());
         requestGetty(self.selectedPlace().name());
         map.setZoom(17);

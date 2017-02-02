@@ -17,6 +17,7 @@ html, body {
 #image-container {
   width: 100%;
   padding: 28px;
+  text-align: center;
 }
 
 #wiki-content {
@@ -38,9 +39,10 @@ html, body {
 
 .reset {
   margin-left: 10px;
-  width: 100px;
   cursor: pointer;
+  text-align: center;
 }
+
 .title-bar {
   width: 100%;
   display: flex;
@@ -51,6 +53,10 @@ html, body {
   width: 100%;
   display: flex;
   align-items: center;
+}
+
+.place-list {
+    width: 280px;
 }
 
 .list-item {
@@ -67,9 +73,6 @@ html, body {
   height: 100% !important;
 }
 
-.modal-image {
-    margin: 6px;
-}
 
 @media only screen and (max-width: 500px) {
 
@@ -82,8 +85,9 @@ html, body {
       margin: 0;
   }
 
-  .filter-header {
-      display: none;
+  #wiki-dialog {
+    width: 100%;
   }
+
 
 }

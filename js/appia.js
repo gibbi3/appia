@@ -11,7 +11,7 @@ var initialPlaces = [
      location: {lat: 41.892884, lng: 12.484744},
      period: "Pre-Imperial",
      description: "This arch was built to honor a Roman victory over the"
-     + "Parthians. Built in the days of the Roman Republic.",},
+     + "Parthians. Built in the days of the Roman Republic."},
     {name: "The Pantheon",
      location: {lat: 41.898603, lng: 12.476873},
      period: "Imperial",
@@ -57,13 +57,13 @@ var initialPlaces = [
      + " long ago, leaving behind some gold flakes."}
  ];
 
-var periods = ['Pre-Imperial', 'Imperial', 'Post-Imperial'];
+var periods = ["Pre-Imperial", "Imperial", "Post-Imperial"];
 
 var setMap = function() {
     // Initiation of Google map.
-    map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById("map"), {
         center: {lat: 41.889827, lng: 12.486559},
-        mapTypeId: 'satellite',
+        mapTypeId: "satellite",
         zoom: 15,
         mapTypeControl: false,
         draggable: true
@@ -73,7 +73,6 @@ var setMap = function() {
 };
 
 var setPlaces = function() {
-
     for (i in historicPlaces()) {
         var place = historicPlaces()[i];
         marker = new google.maps.Marker({
@@ -102,7 +101,7 @@ var setPlaces = function() {
         // Closure assigning the values of place and marker to 'name' and
         // 'target' respectively in the preceding function
         }(place, marker));
-    };
+    }
 };
 
 var stopAnimation = function(marker) {
@@ -122,7 +121,7 @@ var filterPlaces = function(period) {
             marker.setVisible(false);
         }
     }
-}
+};
 
 var requestWiki = function(object) {
     //Clear error message if present
@@ -136,7 +135,7 @@ var requestWiki = function(object) {
         url: 'https://en.wikipedia.org/w/api.php?action='
             + 'opensearch&search='+ object +'&format=json',
         dataType: "jsonp"
-      })
+      });
       .done(function(response) {
           clearTimeout(wikiTimeout);
               //Return the first and (theoretically) most relavent link
@@ -147,7 +146,7 @@ var requestWiki = function(object) {
               $('#wiki-link').on('click', function() {
                   $('#wiki-modal').modal('show');
             });
-      })
+      });
 };
 
 var requestGetty = function(object) {
@@ -168,9 +167,9 @@ var requestGetty = function(object) {
             $("#image-container").append("<img class='modal-image' src='"
                 + data.images[i].display_sizes[0].uri + "'/>");
          }
-    })
+    }),
     .fail(function(data){
-        alert("Unable to retrieve images.")
+        alert("Unable to retrieve images.");
     });
 };
 
@@ -190,7 +189,7 @@ var ViewModel = function() {
     this.historicPlacesList = ko.observableArray([]);
 
     initialPlaces.forEach(function(place) {
-        historicPlaces.push(place);
+        historicPlaces.push(place)
     });
 
     initialPlaces.forEach(function(placeItem) {
@@ -220,8 +219,6 @@ var ViewModel = function() {
         self.selectedPlace(clicked);
         for (i = 0; i < markers.length; i++) {
             marker = markers[i];
-            console.log(marker.name);
-            console.log(self.selectedPlace().name());
             if (marker.name == self.selectedPlace().name()) {
                 marker.setAnimation(google.maps.Animation.BOUNCE);
                 stopAnimation(marker);

@@ -22,3 +22,6 @@ The Google Maps API
 Knockout.js
 Getty Images
 Wikipedia
+
+Filtering markers function largely taken from:
+http://stackoverflow.com/questions/22323073/how-to-filter-google-maps-markers-in-one-array-with-select

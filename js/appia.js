@@ -1,6 +1,7 @@
 var map;
+// An array to hold the markers created
 var markers = [];
-// Where the places are.
+// Where the places are
 var initialPlaces = [
     {name: "Foro Romano",
      location: {lat: 41.892451, lng: 12.485324},
@@ -183,7 +184,8 @@ var Place = function(data) {
 var ViewModel = function() {
 
     var self = this;
-
+    //  Two arrays are separated to facilitate creation of markers and the
+    //  inherently chnaging 'historicPlacesList'.
     historicPlaces = ko.observableArray([]);
     this.historicPlacesList = ko.observableArray([]);
 
@@ -200,12 +202,15 @@ var ViewModel = function() {
     this.selectedPeriod = ko.observable('');
 
     this.filterPlacesList = function() {
+        //Empty list of places to be filled with those meeting specification
         self.historicPlacesList([]);
         for (i = 0; i < initialPlaces.length; i++) {
             var place = initialPlaces[i];
+            //Each place's period is compared to the selected one
             if (initialPlaces[i].period == self.selectedPeriod() ||
                 self.selectedPeriod() == undefined) {
                 //If given place's period matches selected period, add to list
+                //If no period is selected, all are added to list
                 self.historicPlacesList.push( new Place(place) );
             }
         }

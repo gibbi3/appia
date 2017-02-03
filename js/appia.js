@@ -131,11 +131,11 @@ var requestWiki = function(object) {
       $('#error-msg').text("Unable to find Wikipedia articles for " + object);
     }, 5000);
 
-    var request = $.ajax({
+    $.ajax({
         url: 'https://en.wikipedia.org/w/api.php?action='
             + 'opensearch&search='+ object +'&format=json',
         dataType: "jsonp"
-      });
+      })
       .done(function(response) {
           clearTimeout(wikiTimeout);
               //Return the first and (theoretically) most relavent link
@@ -145,7 +145,7 @@ var requestWiki = function(object) {
               //Trigger opening of secondary 'wiki' modal upon click.
               $('#wiki-link').on('click', function() {
                   $('#wiki-modal').modal('show');
-            });
+            })
       });
 };
 
@@ -167,7 +167,7 @@ var requestGetty = function(object) {
             $("#image-container").append("<img class='modal-image' src='"
                 + data.images[i].display_sizes[0].uri + "'/>");
          }
-    }),
+    })
     .fail(function(data){
         alert("Unable to retrieve images.");
     });

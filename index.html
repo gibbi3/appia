@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>Appia</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Appia</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <script src="bower_components/knockout/dist/knockout.js"></script>
   </head>
   <body>
-    <div class="container">
-      <div class="title-bar">
+    <article class="container">
+      <nav class="title-bar">
         <div class="title-section">
           <div class="btn-group">
             <button class="btn btn-secondary btn-lg dropdown-toggle"
@@ -35,10 +34,10 @@
                        value: selectedPeriod"></select>
           <div data-bind="click: mapReset" class="reset">Center Map</div>
         </div>
-      </div>
+      </nav>
       <div id="map"></div>
-    </div>
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog"
+    </article>
+    <article class="modal fade" id="modal" tabindex="-1" role="dialog"
       aria-labelledby="myModalLabel">
       <div id= "modal-dialog" class="modal-dialog" role="document">
         <div class="modal-content">
@@ -50,21 +49,23 @@
               id="modal-title"></h4>
           </div>
           <div class="modal-body">
-            <div id="image-container">
+            <div class="image-container" data-bind="foreach: gettyImages">
+              <img class="modal-image" data-bind="attr: {'src': $data }"></img>
             </div>
             <p data-bind="text: selectedPlace().description" id="description">
             </p>
           </div>
           <div class="modal-footer">
             <div id="error-msg"></div>
-            <a id="wiki-link" class="btn" target="myframe">Learn more</a>
+            <a id="wiki-link" class="btn" target="myframe"
+              data-bind="attr: {'href':wikiUrl}">Learn more</a>
             <button type="button" class="btn btn-default"
               data-dismiss="modal">Neat!</button>
           </div>
         </div>
       </div>
-    </div>
-    <div class="modal fade" id="wiki-modal" tabindex="-1" role="dialog"
+    </article>
+    <article class="modal fade" id="wiki-modal" tabindex="-1" role="dialog"
       aria-labelledby="myModalLabel">
       <div id= "wiki-dialog" class="modal-dialog" role="document">
         <div id="wiki-content" class="modal-content">
@@ -84,11 +85,13 @@
           </div>
         </div>
       </div>
-    </div>
+    </article>
+    <script src="bower_components/knockout/dist/knockout.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/knockstrap.min.js"></script>
     <script src="js/appia.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5Xao9EpG77CixeEYP_yFpJVE0M8IE0vU&callback=setMap"
-        async defer></script>
+        async defer onerror="googleError()"></script>
   </body>
 </html>

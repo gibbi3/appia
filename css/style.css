@@ -14,9 +14,8 @@ html, body {
   position: relative;
 }
 
-#image-container {
+.image-container {
   width: 100%;
-  padding: 28px;
   text-align: center;
 }
 
@@ -31,6 +30,11 @@ html, body {
 #error-msg {
   text-align: left;
   color: red;
+}
+
+#description {
+  text-align: center;
+  margin-top: 10px;
 }
 
 .btn-secondary.btn-lg {

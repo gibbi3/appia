@@ -57,23 +57,28 @@ var initialPlaces = [
      + " long ago, leaving behind some gold flakes."}
  ];
 
-var periods = ["Pre-Imperial", "Imperial", "Post-Imperial"];
+var periods = ['Pre-Imperial', 'Imperial', 'Post-Imperial'];
 
 var setMap = function() {
     // Initiation of Google map.
-    map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 41.889827, lng: 12.486559},
-        mapTypeId: "satellite",
+        mapTypeId: 'satellite',
         zoom: 15,
-        mapTypeControl: false,
+        mapTypeControl: true,
         draggable: true
     });
     // Instantiate collected places on the map.
     setPlaces();
 };
 
+var googleError = function() {
+  alert("Unable to load map from Google Maps.");
+};
+
 var setPlaces = function() {
-    for (i in historicPlaces()) {
+    var i;
+    for (i = 0; i < historicPlaces().length; i++) {
         var place = historicPlaces()[i];
         marker = new google.maps.Marker({
             name: place.name,
@@ -84,18 +89,18 @@ var setPlaces = function() {
         markers.push(marker);
         google.maps.event.addListener(marker, 'click', function(name, target) {
             return function() {
-            // Set animation to clicked marker
+                // Set current place in View Model
+                selectPlace(name);
+                console.log(viewModel.selectedPlace().name());
+                // Set animation to clicked marker
                 target.setAnimation(google.maps.Animation.BOUNCE);
                 stopAnimation(target);
                 map.setCenter(name.location);
                 map.setZoom(17);
-                $('#image-container').html('');
-            // Search wikipedia for articles matching name of location
+                // Search wikipedia for articles matching name of location
                 requestWiki(name.name);
                 requestGetty(name.name);
-            // Replace information within modal with that of selected location
-                $('#description').text(name.description);
-                $('#modal-title').text(name.name);
+                // Replace information within modal with that of selected location
                 $('#modal').modal('show');
             };
         // Closure assigning the values of place and marker to 'name' and
@@ -104,18 +109,31 @@ var setPlaces = function() {
     }
 };
 
+var selectPlace = function(place) {
+    var p;
+    // Cycle through all places in view model's array
+    for (p = 0; p < viewModel.historicPlacesList().length; p++) {
+        // Select the one matching the marker
+        if (place.name == viewModel.historicPlacesList()[p].name()) {
+            // Select it
+            viewModel.selectedPlace(viewModel.historicPlacesList()[p]);
+        }
+    }
+};
+
 var stopAnimation = function(marker) {
     // Sets timeout for marker animation after one is clicked.
     setTimeout(function () {
         marker.setAnimation(null);
-    }, 5000);
+    }, 3500);
 };
 
 var filterPlaces = function(period) {
     //Set visibility of markers according to period selected
+    var i;
     for (i = 0; i < markers.length; i++) {
         marker = markers[i];
-        if(marker.period == period || period.length == 0) {
+        if(marker.period == period || period.length === 0) {
             marker.setVisible(true);
         } else {
             marker.setVisible(false);
@@ -124,11 +142,9 @@ var filterPlaces = function(period) {
 };
 
 var requestWiki = function(object) {
-    //Clear error message if present
-    $('#error-msg').text('');
 
     var wikiTimeout = setTimeout(function(){
-      $('#error-msg').text("Unable to find Wikipedia articles for " + object);
+      alert("Unable to find Wikipedia articles for " + object + ".");
     }, 5000);
 
     $.ajax({
@@ -139,13 +155,12 @@ var requestWiki = function(object) {
       .done(function(response) {
           clearTimeout(wikiTimeout);
               //Return the first and (theoretically) most relavent link
-              var wikiLink = response[3][0]
+          var wikiLink = response[3][0]
               //Set link value to modal's "Learn more" link.
-              $('#wiki-link').attr("href", wikiLink);
-              //Trigger opening of secondary 'wiki' modal upon click.
-              $('#wiki-link').on('click', function() {
-                  $('#wiki-modal').modal('show');
-            })
+          viewModel.wikiUrl(wikiLink);
+          $('#wiki-link').on('click', function() {
+              $('#wiki-modal').modal('show');
+          });
       });
 };
 
@@ -162,11 +177,15 @@ var requestGetty = function(object) {
         }
     })
     .done(function(data){
-        //Add the first 9 images returned from Getty to modal
-        for(var i = 0;i< 9;i++) {
-            $("#image-container").append("<img class='modal-image' src='"
-                + data.images[i].display_sizes[0].uri + "'/>");
-         }
+        // Clear images from Getty Images array.
+        viewModel.gettyImages([]);
+        // Add the first 9 images returned from Getty Images array.
+        var i;
+        for(var i = 0;i< 9; i++) {
+            var result = data.images[i].display_sizes[0].uri;
+            viewModel.gettyImages.push(result);
+            console.log(viewModel.gettyImages()[i]);
+        }
     })
     .fail(function(data){
         alert("Unable to retrieve images.");
@@ -189,12 +208,16 @@ var ViewModel = function() {
     this.historicPlacesList = ko.observableArray([]);
 
     initialPlaces.forEach(function(place) {
-        historicPlaces.push(place)
+        historicPlaces.push(place);
     });
 
     initialPlaces.forEach(function(placeItem) {
         self.historicPlacesList.push( new Place(placeItem) );
     });
+    // Observable array to hold images returned from API call to Getty
+    this.gettyImages = ko.observableArray([]);
+    // Observable to hold link for wikipedia article returned from API call
+    this.wikiUrl = ko.observable();
 
     this.selectedPlace = ko.observable( this.historicPlacesList()[0] );
 
@@ -230,7 +253,6 @@ var ViewModel = function() {
         requestGetty(self.selectedPlace().name());
         map.setZoom(17);
         map.setCenter(self.selectedPlace().location());
-        $('#image-container').html('');
         $('#modal').modal('show');
     };
 
@@ -238,5 +260,5 @@ var ViewModel = function() {
         setMap();
     };
 };
-
-ko.applyBindings(new ViewModel());
+var viewModel = new ViewModel();
+ko.applyBindings( viewModel );

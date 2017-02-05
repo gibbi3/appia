@@ -7,7 +7,7 @@ var initialPlaces = [
      location: {lat: 41.892451, lng: 12.485324},
      period: "Pre-Imperial",
      description: "The Roman Forum was the center of the Roman Empire"},
-    {name: "Septimus Severus Arch",
+    {name: "Arch of Septimus Severus",
      location: {lat: 41.892884, lng: 12.484744},
      period: "Pre-Imperial",
      description: "This arch was built to honor a Roman victory over the"

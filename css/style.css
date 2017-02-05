@@ -23,10 +23,6 @@ html, body {
   background: silver;
 }
 
-#wiki-dialog {
-  width: 75%;
-}
-
 #error-msg {
   text-align: left;
   color: red;
@@ -82,6 +78,13 @@ html, body {
   height: 100% !important;
 }
 
+@media only screen and (min-width: 500px) {
+
+    #wiki-dialog {
+      width: 80%;
+    }
+
+}
 
 @media only screen and (max-width: 500px) {
 
@@ -92,10 +95,6 @@ html, body {
   .modal-image {
       width: 100%;
       margin: 0;
-  }
-
-  #wiki-dialog {
-    width: 100%;
   }
 
 

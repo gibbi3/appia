@@ -65,7 +65,7 @@ var setMap = function() {
         center: {lat: 41.889827, lng: 12.486559},
         mapTypeId: 'satellite',
         zoom: 15,
-        mapTypeControl: true,
+        mapTypeControl: false,
         draggable: true
     });
     // Instantiate collected places on the map.
